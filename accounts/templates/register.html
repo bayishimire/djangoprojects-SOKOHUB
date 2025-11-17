@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}  
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <!-- Left Side -->
+        <div class="col-md-6 d-none d-md-block">
+            <!-- You can put an image, welcome text, or info here -->
+            {% comment %} <img src="{% static 'sam.png' %}" class="img-fluid" alt="Register Image">
+            <img src="{% static 'sam2.jpg' %}" class="img-fluid" alt="Register Image"> {% endcomment %}
+            <img src="{% static 'sam3.png' %}" class="img-fluid" alt="Register Image">
+             
+
+
+
+            <h2 class="mt-3">Welcome to Soko Hub!</h2>
+            <p>Join our community and start selling or buying products easily.</p>
+        </div>
+
+        <!-- Right Side (Form) -->
+        <div class="col-md-6">
+            <div class="card p-4 shadow-sm">
+                <h1 class="bg-primary text-center py-2 text-white mb-3">Register</h1>
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-primary w-100">Register</button>
+                    <p class="mt-3 text-center">
+                        Already have an account? <a href="{% url 'login' %}">Login here</a>.
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
