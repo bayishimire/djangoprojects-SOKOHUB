@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% block title %}Vendor Dashboard{% endblock %}
+
+{% block content %}
+<h2>Vendor Dashboard</h2>
+
+<!-- Top cards -->
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card text-white bg-primary shadow-lg" style="min-height: 150px;">
+            <div class="card-body text-center d-flex flex-column justify-content-center">
+                <h5 class="card-title fs-4">Total Products</h5>
+                <p class="card-text fs-1 fw-bold">{{ total_products }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card text-white bg-success shadow-lg" style="min-height: 150px;">
+            <div class="card-body text-center d-flex flex-column justify-content-center">
+                <h5 class="card-title fs-4">Active Products</h5>
+                <p class="card-text fs-1 fw-bold">{{ active_products }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card text-white bg-danger shadow-lg" style="min-height: 150px;">
+            <div class="card-body text-center d-flex flex-column justify-content-center">
+                <h5 class="card-title fs-4">Out of Stock</h5>
+                <p class="card-text fs-1 fw-bold">{{ out_of_stock }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<a href="{% url 'add_product' %}" class="btn btn-success mb-3">Add New Product</a>
+
+{% if products %}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Status</th>
+            <th>Actions</th>   <!-- NEW -->
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in products %}
+        <tr>
+            <td>{{ product.name }}</td>
+            <td>${{ product.price }}</td>
+
+            <td>
+                {% if product.stock == 0 %}
+                    <span class="text-danger fw-bold">Out of stock</span>
+                {% else %}
+                    {{ product.stock }}
+                {% endif %}
+            </td>
+
+            <td>{{ product.status }}</td>
+
+            <td>
+                <!-- EDIT BUTTON -->
+                <a href="{% url 'edit_product' product.pk %}" class="btn btn-warning btn-sm">
+                    Edit
+                </a>
+
+                <!-- DELETE BUTTON -->
+                <a href="{% url 'delete_product' product.pk %}" class="btn btn-danger btn-sm">
+                    Delete
+                </a>
+            </td>
+
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No products yet.</p>
+{% endif %}
+{% endblock %}

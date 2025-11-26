@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+
+            <div class="card shadow-sm border-0">
+
+                <!-- Header -->
+                <div class="card-header bg-primary text-white text-center border-0">
+                    <h4 class="m-0">Login Dashboard</h4>
+                </div>
+
+                
+                <div class="text-center mt-3">
+                    <img src="{% static 'sam2.jpg' %}" 
+                         class="img-fluid rounded"
+                         alt="Login Image"
+                         style="max-height: 180px; object-fit: cover;">
+                </div>
+
+               
+
+
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form.non_field_errors }}
+
+                        <div class="mb-3">
+                            {{ form.username.label_tag }}
+                            {{ form.username }}
+                            <div class="text-danger small">{{ form.username.errors }}</div>
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form.password.label_tag }}
+                            {{ form.password }}
+                            <div class="text-danger small">{{ form.password.errors }}</div>
+                        </div>
+
+                        <div class="form-check mb-3">
+                            {{ form.remember_me }}
+                            {{ form.remember_me.label_tag }}
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">
+                            Login
+                        </button>
+
+                        <p class="text-center mt-3">
+                            Don't have an account? 
+                            <a href="{% url 'register' %}">Register here</a>.
+                        </p>
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
