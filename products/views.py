@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Product
 from .forms import ProductForm
 from accounts.decorators import vendor_required
-from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 # Customer views
@@ -21,6 +20,7 @@ def vendor_dashboard(request):
     total_products = products.count()
     active_products = products.filter(status='active').count()
     out_of_stock = products.filter(stock=0).count()
+
     context = {
         'products': products,
         'total_products': total_products,
@@ -36,7 +36,7 @@ def add_product(request):
         if form.is_valid():
             product = form.save(commit=False)
             product.vendor = request.user
-            product.status = 'active'  # ensure active by default
+            product.status = 'active'
             product.save()
             messages.success(request, "Product added successfully!")
             return redirect('vendor_dashboard')
@@ -45,3 +45,26 @@ def add_product(request):
     else:
         form = ProductForm()
     return render(request, 'add_product.html', {'form': form})
+
+@vendor_required
+def edit_product(request, pk):
+    product = get_object_or_404(Product, pk=pk, vendor=request.user)
+    form = ProductForm(request.POST or None, request.FILES or None, instance=product)
+
+    if request.method == "POST" and form.is_valid():
+        form.save()
+        messages.success(request, "Product updated successfully!")
+        return redirect('vendor_dashboard')
+
+    return render(request, 'edit_product.html', {'form': form, 'product': product})
+
+@vendor_required
+def delete_product(request, pk):
+    product = get_object_or_404(Product, pk=pk, vendor=request.user)
+
+    if request.method == "POST":
+        product.delete()
+        messages.success(request, "Product deleted successfully!")
+        return redirect('vendor_dashboard')
+
+    return render(request, 'confirm_delete.html', {'product': product})

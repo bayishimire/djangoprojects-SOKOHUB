@@ -1,19 +1,47 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
-<h2>Order Confirmation</h2>
-<p>Order ID: {{ order.id }}</p>
-<p>Customer: {{ order.customer.username }}</p>
-<p>Delivery Address: {{ order.delivery_address }}</p>
-<p>Phone: {{ order.phone }}</p>
+<div class="container mt-4">
+    <h2 class="mb-4">Order Confirmation</h2>
 
-<h3>Items:</h3>
-<ul>
-    {% for item in order.orderitem_set.all %}
-        <li>{{ item.product.name }} - Quantity: {{ item.quantity }} - Price: ${{ item.price }}</li>
-    {% endfor %}
-</ul>
+    <div class="card mb-4">
+        <div class="card-body">
+            <p><strong>Order ID:</strong> {{ order.id }}</p>
+            <p><strong>Customer:</strong> {{ order.customer.username }}</p>
+            <p><strong>Delivery Address:</strong> {{ order.delivery_address }}</p>
+            <p><strong>Phone:</strong> {{ order.phone }}</p>
+            <p><strong>Status:</strong> {{ order.get_status_display }}</p>
+            <p><strong>Date:</strong> {{ order.created_at|date:"d M Y H:i" }}</p>
+        </div>
+    </div>
 
-<p>Total: ${{ order.total }}</p>
-<a href="{% url 'product_list' %}">Back to Shop</a>
+    <h3>Items</h3>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Qty</th>
+                <th>Price ($)</th>
+                <th>Subtotal ($)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in order.items.all %}
+            <tr>
+                <td>{{ item.product.name }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.price }}</td>
+                <td>{{ item.subtotal }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h4>Total: ${{ order.total }}</h4>
+
+    <a href="{% url 'order_history' %}" class="btn btn-success">View My Orders</a>
+    <a href="{% url 'product_list' %}" class="btn btn-secondary">Continue Shopping</a>
+</div>
 {% endblock %}

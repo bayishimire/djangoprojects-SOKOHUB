@@ -3,19 +3,21 @@
 
 {% block content %}
 <h2>Checkout: {{ product.name }}</h2>
-<img src="{{ product.image.url }}" alt="{{ product.name }}" width="200">
+
+<img src="{{ product.image.url }}" width="200">
 
 <form method="post">
     {% csrf_token %}
+    
     <label>Quantity:</label>
     <input type="number" name="quantity" value="1" min="1" max="{{ product.stock }}">
-    
+
     <label>Delivery Address:</label>
     <input type="text" name="delivery_address" required>
-    
+
     <label>Phone:</label>
     <input type="text" name="phone" required>
-    
-    <button type="submit">Place Order</button>
+
+    <button type="submit" class="btn btn-primary">Place Order</button>
 </form>
 {% endblock %}

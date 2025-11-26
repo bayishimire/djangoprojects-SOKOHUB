@@ -29,6 +29,8 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('products/', include('products.urls')),
     path('orders/', include('orders.urls')),
+    # Include all built-in auth URLs (login, logout, password reset, password change)
+    path('accounts/', include('django.contrib.auth.urls')),
 ]
 
 if settings.DEBUG:
